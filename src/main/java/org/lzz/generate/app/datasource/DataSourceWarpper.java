@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author zeze.li
@@ -43,34 +44,38 @@ public class DataSourceWarpper {
         this.map = new HashMap<>();
     }
 
-    public Connection createConnection(DataSource dataSource) throws ClassNotFoundException, SQLException {
-
-        dataSource.setClassName("dm.jdbc.driver.DmDriver");
-        dataSource.setPassWord("dmserver2020");
-        dataSource.setUrl("jdbc:dm://localhost:5236");
-        dataSource.setUserName("LZZ");
-        dataSource.setDataBaseName(dataSource.getUserName());
+    public String createConnection(DataSource dataSource) throws ClassNotFoundException, SQLException {
+//
+//        dataSource.setClassName("dm.jdbc.driver.DmDriver");
+//        dataSource.setPassWord("dmserver2020");
+//        dataSource.setUrl("jdbc:dm://localhost:5236");
+//        dataSource.setUserName("LZZ");
+        dataSource.setClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://cd.bj..:10029/test?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+        dataSource.setUserName("root");
+        dataSource.setPassWord("1");
+        dataSource.setDataBaseName("test");
         this.dataSource = dataSource;
-        if (map.containsKey("a")) return map.get(dataSource.getSourceId());
 
+        String sourceId = UUID.randomUUID().toString();
         Class.forName(dataSource.getClassName());
         Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPassWord());
-        map.put("a", connection);
-        return connection;
+        map.put(sourceId, connection);
+        return sourceId;
     }
 
 
-    public DatabaseMetaData getDatabaseMetaData() throws SQLException, ClassNotFoundException {
+    public DatabaseMetaData getDatabaseMetaData(String sourceId) throws SQLException, ClassNotFoundException {
 
 
-        if (this.map.size() == 0 || this.map == null)
-            return this.createConnection(new DataSource()).getMetaData();
-        return this.getConnection("").getMetaData();
+        if (this.map.size() == 0 || this.map == null || !map.containsKey(sourceId))
+            throw new RuntimeException("未登录");
+        return this.getConnection(sourceId).getMetaData();
     }
 
-    public Connection getConnection(String key) {
+    public Connection getConnection(String sourceId) {
 
-        return this.map.get("a");
+        return this.map.get(sourceId);
     }
 
 }

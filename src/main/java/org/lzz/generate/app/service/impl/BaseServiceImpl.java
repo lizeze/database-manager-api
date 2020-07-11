@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class BaseServiceImpl implements BaseService {
     private DataSourceWarpper dataSourceWarpper;
 
     @Override
-    public List<ColumnVo> getColumn(String tableName) throws SQLException, ClassNotFoundException {
+    public List<ColumnVo> getColumn(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
         ResultSet columns = dataSourceWarpper.getDatabaseMetaData().getColumns(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName, "%");
         List<ColumnVo> columnVoList = new ArrayList<>();
         ColumnVo columnVo = null;
@@ -45,7 +46,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<String> getPrimaryKeys(String tableName) throws SQLException, ClassNotFoundException {
+    public List<String> getPrimaryKeys(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
 
         List<String> list = new ArrayList<>();
         ResultSet primaryKeys = dataSourceWarpper.getDatabaseMetaData().getPrimaryKeys(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName);
@@ -56,11 +57,16 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<TableVo> getTables() throws SQLException, ClassNotFoundException {
-
-
+    public List<TableVo> getTables(String sourceId) throws SQLException, ClassNotFoundException {
+        dataSourceWarpper.createConnection(new DataSource());
+        Statement statement = dataSourceWarpper.getConnection("").createStatement();
+        ResultSet rs = statement.executeQuery("SHOW TABLES");
+        while (rs.next()) {
+            String tableName = rs.getString(1);
+            System.out.println(rs.getString(1));
+        }
         String[] types = new String[1];
-        types[0] = "table";
+        types[0] = "TABLE";
         ResultSet tables = dataSourceWarpper.getDatabaseMetaData().getTables(null, dataSourceWarpper.getDataSource().getDataBaseName(), null, types);
         List<TableVo> tableVos = new ArrayList<>();
         TableVo tableVo = null;

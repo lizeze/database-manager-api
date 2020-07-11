@@ -24,12 +24,20 @@
             <artifactId>jdbc</artifactId>
             <scope>system</scope>
             <version>1</version>
-
             <systemPath>${project.basedir}/src/main/resources/lib/DmJdbcDriver18.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.16</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/mysql-connector-java-8.0.16.jar</systemPath>
+
         </dependency>
 
 
@@ -38,14 +46,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.66</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.dm</groupId>
-            <artifactId>hibernate5</artifactId>
-            <version>1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/DmDialect-for-hibernate5.3.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
