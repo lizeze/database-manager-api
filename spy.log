@@ -1,0 +1,10 @@
+1594449974541|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM test1 |SELECT username,password FROM test1 
+1594450000355|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM test1 |SELECT username,password FROM test1 
+1594450032053|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM SYSDBA.test1 |SELECT username,password FROM SYSDBA.test1 
+1594450067559|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM SYSDBA.test1 |SELECT username,password FROM SYSDBA.test1 
+1594450098627|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM SYSDBA.test1|SELECT username,password FROM SYSDBA.test1
+1594450488046|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM SYSDBA.test1|SELECT username,password FROM SYSDBA.test1
+1594450501589|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM test1|SELECT username,password FROM test1
+1594450515059|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM test1|SELECT username,password FROM test1
+1594450565925|7|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM test|SELECT username,password FROM test
+1594450580218|8|statement|connection 0|url jdbc:p6spy:dm://localhost:5236|SELECT username,password FROM test|SELECT username,password FROM test
