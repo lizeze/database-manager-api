@@ -37,10 +37,10 @@ public class GenerateController {
     }
 
 
-    @GetMapping("/table")
-    public ResponseEntity getTables() throws SQLException, ClassNotFoundException {
+    @GetMapping("/table/{sourceId}")
+    public ResponseEntity getTables(@PathVariable String sourceId) throws SQLException, ClassNotFoundException {
 
-        List<TableVo> tableVos = baseService.getTables("");
+        List<TableVo> tableVos = baseService.getTables(sourceId);
 
         return ResponseEntity.status(HttpStatus.OK).body(tableVos);
 
