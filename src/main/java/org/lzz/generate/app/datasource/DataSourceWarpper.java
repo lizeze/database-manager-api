@@ -50,16 +50,15 @@ public class DataSourceWarpper {
 //        dataSource.setPassWord("dmserver2020");
 //        dataSource.setUrl("jdbc:dm://localhost:5236");
 //        dataSource.setUserName("LZZ");
-        dataSource.setClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://cd.bj..:10029/test?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
-        dataSource.setUserName("root");
-        dataSource.setPassWord("1");
-        dataSource.setDataBaseName("test");
+//        dataSource.setClassName("com.mysql.jdbc.Driver");
+//        dataSource.setUserName("root");
+//        dataSource.setDataBaseName("test");
         this.dataSource = dataSource;
 
         String sourceId = UUID.randomUUID().toString();
         Class.forName(dataSource.getClassName());
         Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPassWord());
+//        sourceId = "a";
         map.put(sourceId, connection);
         return sourceId;
     }

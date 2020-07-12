@@ -9,15 +9,16 @@ package org.lzz.generate.app.datasource;
  */
 public class DriverWarpper {
 
-
     private DataSource dataSource;
 
-    public DriverWarpper(String type) {
-        dataSource = new DataSource();
-        if (type == "mysql") {
+    public DriverWarpper(DataSource dataSource) {
+        if (dataSource.getType().equals("mysql")) {
             dataSource.setClassName("com.mysql.jdbc.Driver");
+            dataSource.setUrl("jdbc:mysql://" + dataSource.getHost() + ":" + dataSource.getPort() + "/" + dataSource.getDataBaseName() + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
         }
+        this.dataSource = dataSource;
     }
+
 
     public DataSource getDataSource() {
         return dataSource;

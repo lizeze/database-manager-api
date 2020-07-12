@@ -13,7 +13,16 @@ public class TableVo {
 
 
     private String tableName;
-    private List<ColumnVo> columnVos;
+
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getTableName() {
         return tableName;
@@ -23,11 +32,5 @@ public class TableVo {
         this.tableName = tableName;
     }
 
-    public List<ColumnVo> getColumnVos() {
-        return columnVos;
-    }
 
-    public void setColumnVos(List<ColumnVo> columnVos) {
-        this.columnVos = columnVos;
-    }
 }

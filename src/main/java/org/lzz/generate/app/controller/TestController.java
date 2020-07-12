@@ -7,6 +7,7 @@ import org.lzz.generate.app.datasource.DataSource;
 import org.lzz.generate.app.datasource.DataSourceWarpper;
 import org.lzz.generate.app.vo.ColumnVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -49,7 +50,7 @@ public class TestController {
     public String createConnection(@RequestBody DataSource dataSource) throws SQLException, ClassNotFoundException {
         String sql = "SELECT username,password FROM test";
         //第四步：获取statement类
-        Statement statement = dataSourceWarpper.createConnection(dataSource).createStatement();
+        Statement statement = dataSourceWarpper.getConnection("dataSource").createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         return "";
     }

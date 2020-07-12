@@ -1,11 +1,18 @@
 package org.lzz.generate.app.service.impl;
 
+import org.lzz.generate.app.datasource.DataSource;
+import org.lzz.generate.app.datasource.DataSourceWarpper;
 import org.lzz.generate.app.service.BaseService;
 import org.lzz.generate.app.vo.ColumnVo;
 import org.lzz.generate.app.vo.TableVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +27,10 @@ public class MysqlServiceImpl implements BaseService {
 
     private final String DRIVER = "com.mysql.jdbc.Driver";
 
+
+    @Autowired
+    private DataSourceWarpper dataSourceWarpper;
+
     @Override
     public List<ColumnVo> getColumn(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
         return null;
@@ -27,11 +38,47 @@ public class MysqlServiceImpl implements BaseService {
 
     @Override
     public List<String> getPrimaryKeys(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
-        return null;
+
+        List<String> list = new ArrayList<>();
+        ResultSet primaryKeys = dataSourceWarpper.getDatabaseMetaData(sourceId).getPrimaryKeys(dataSourceWarpper.getDataSource().getDataBaseName(), dataSourceWarpper.getDataSource().getDataBaseName(), tableName);
+        while (primaryKeys.next()) {
+            list.add(primaryKeys.getString("column_name"));
+        }
+        return list;
     }
 
     @Override
     public List<TableVo> getTables(String sourceId) throws SQLException, ClassNotFoundException {
-        return null;
+        dataSourceWarpper.createConnection(new DataSource());
+
+        Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
+        ResultSet rs = statement.executeQuery("show table status");
+
+        List<TableVo> tableVos = new ArrayList<>();
+        TableVo tableVo = null;
+        while (rs.next()) {
+            tableVo = new TableVo();
+            String tableName = rs.getString("name");
+            String remark = rs.getString("comment");
+            tableVo.setTableName(tableName);
+            tableVo.setRemark(remark);
+            tableVos.add(tableVo);
+        }
+        return tableVos;
+    }
+
+    @Override
+    public List<String> getDataBase(String sourceId) throws SQLException {
+        Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
+        ResultSet rs = statement.executeQuery("SHOW DATABASES");
+
+        List<String> dataBases = new ArrayList<>();
+        TableVo tableVo = null;
+        while (rs.next()) {
+            tableVo = new TableVo();
+            String dataBaseName = rs.getString("DataBase");
+            dataBases.add(dataBaseName);
+        }
+        return dataBases;
     }
 }

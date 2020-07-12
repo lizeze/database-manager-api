@@ -23,4 +23,7 @@ public interface BaseService {
 
     List<TableVo> getTables(String sourceId) throws SQLException, ClassNotFoundException;
 
+    List<String> getDataBase(String sourceId) throws SQLException;
+
+
 }

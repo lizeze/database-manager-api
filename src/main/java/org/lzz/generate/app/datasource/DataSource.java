@@ -9,13 +9,49 @@ package org.lzz.generate.app.datasource;
  */
 public class DataSource {
 
-
+    private String name;
     private String sourceId;
     private String className;
     private String url;
+    private String host;
+    private String port;
     private String userName;
     private String passWord;
     private String dataBaseName;
+    private String type;
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getSourceId() {
         return sourceId;

@@ -22,7 +22,7 @@ import java.util.List;
  * @Description TODO
  * @createTime 2020年07月11日 17:04:00
  */
-@Service
+@Service("dm")
 public class BaseServiceImpl implements BaseService {
 
 
@@ -31,7 +31,7 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public List<ColumnVo> getColumn(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
-        ResultSet columns = dataSourceWarpper.getDatabaseMetaData().getColumns(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName, "%");
+        ResultSet columns = dataSourceWarpper.getDatabaseMetaData(sourceId).getColumns(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName, "%");
         List<ColumnVo> columnVoList = new ArrayList<>();
         ColumnVo columnVo = null;
         while (columns.next()) {
@@ -49,7 +49,7 @@ public class BaseServiceImpl implements BaseService {
     public List<String> getPrimaryKeys(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
 
         List<String> list = new ArrayList<>();
-        ResultSet primaryKeys = dataSourceWarpper.getDatabaseMetaData().getPrimaryKeys(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName);
+        ResultSet primaryKeys = dataSourceWarpper.getDatabaseMetaData(sourceId).getPrimaryKeys(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName);
         while (primaryKeys.next()) {
             list.add(primaryKeys.getString("column_name"));
         }
@@ -58,16 +58,10 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public List<TableVo> getTables(String sourceId) throws SQLException, ClassNotFoundException {
-        dataSourceWarpper.createConnection(new DataSource());
-        Statement statement = dataSourceWarpper.getConnection("").createStatement();
-        ResultSet rs = statement.executeQuery("SHOW TABLES");
-        while (rs.next()) {
-            String tableName = rs.getString(1);
-            System.out.println(rs.getString(1));
-        }
+
         String[] types = new String[1];
         types[0] = "TABLE";
-        ResultSet tables = dataSourceWarpper.getDatabaseMetaData().getTables(null, dataSourceWarpper.getDataSource().getDataBaseName(), null, types);
+        ResultSet tables = dataSourceWarpper.getDatabaseMetaData(sourceId).getTables(null, dataSourceWarpper.getDataSource().getDataBaseName(), null, types);
         List<TableVo> tableVos = new ArrayList<>();
         TableVo tableVo = null;
         while (tables.next()) {
@@ -77,5 +71,10 @@ public class BaseServiceImpl implements BaseService {
 
         }
         return tableVos;
+    }
+
+    @Override
+    public List<String> getDataBase(String sourceId) {
+        return null;
     }
 }

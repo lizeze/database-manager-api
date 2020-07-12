@@ -39,7 +39,11 @@
             <systemPath>${project.basedir}/src/main/resources/lib/mysql-connector-java-8.0.16.jar</systemPath>
 
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.14</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
