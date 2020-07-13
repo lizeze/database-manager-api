@@ -46,7 +46,7 @@ public class MysqlServiceImpl  extends  BaseServiceImpl {
 
     @Override
     public List<TableVo> getTables(String sourceId) throws SQLException, ClassNotFoundException {
-        dataSourceWarpper.createConnection(new DataSource());
+
 
         Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
         ResultSet rs = statement.executeQuery("show table status");
