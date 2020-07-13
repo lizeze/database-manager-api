@@ -2,15 +2,13 @@ package org.lzz.generate.app.controller;
 
 import org.lzz.generate.app.service.BaseService;
 import org.lzz.generate.app.vo.ColumnVo;
+import org.lzz.generate.app.vo.SqlVo;
 import org.lzz.generate.app.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -63,6 +61,16 @@ public class GenerateController {
         List<String> dataBase = baseService.getDataBase(sourceId);
 
         return ResponseEntity.status(HttpStatus.OK).body(dataBase);
+
+    }
+
+
+    @PostMapping("/exec")
+    public ResponseEntity execSql(@RequestBody SqlVo sqlVo) throws SQLException, ClassNotFoundException {
+
+        baseService.executeQuery(sqlVo);
+
+        return ResponseEntity.status(HttpStatus.OK).body(1);
 
     }
 

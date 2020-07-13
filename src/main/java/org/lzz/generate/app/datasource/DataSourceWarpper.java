@@ -58,6 +58,8 @@ public class DataSourceWarpper {
         String sourceId = UUID.randomUUID().toString();
         Class.forName(dataSource.getClassName());
         Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPassWord());
+
+        connection.setAutoCommit(false);
 //        sourceId = "a";
         map.put(sourceId, connection);
         return sourceId;

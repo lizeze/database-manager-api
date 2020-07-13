@@ -1,6 +1,7 @@
 package org.lzz.generate.app.service;
 
 import org.lzz.generate.app.vo.ColumnVo;
+import org.lzz.generate.app.vo.SqlVo;
 import org.lzz.generate.app.vo.TableVo;
 
 import java.sql.SQLException;
@@ -25,5 +26,10 @@ public interface BaseService {
 
     List<String> getDataBase(String sourceId) throws SQLException;
 
+    int executeQuery(SqlVo sqlVo) throws SQLException;
+
+    void commit(String sourceId) throws SQLException;
+
+    void rollback(String sourceId) throws SQLException;
 
 }

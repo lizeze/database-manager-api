@@ -4,6 +4,7 @@ import org.lzz.generate.app.datasource.DataSource;
 import org.lzz.generate.app.datasource.DataSourceWarpper;
 import org.lzz.generate.app.datasource.DriverWarpper;
 import org.lzz.generate.app.service.BaseService;
+import org.lzz.generate.app.vo.SqlVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,21 @@ public class ConnectionController {
         return ResponseEntity.status(HttpStatus.OK).body(dataBase);
     }
 
+    @DeleteMapping("/{sourceId}")
+    public ResponseEntity deleteDataVase(@PathVariable String sourceId) throws SQLException, ClassNotFoundException {
+        if (dataSourceWarpper.getMap().containsKey(sourceId)) {
+            dataSourceWarpper.getMap().get(sourceId).close();
+            dataSourceWarpper.getMap().remove(sourceId);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
+    @PostMapping("/commit/{sourceId}")
+    public ResponseEntity commit(@PathVariable String sourceId) throws SQLException {
+
+        baseService.commit(sourceId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(1);
+
+    }
 
 }

@@ -4,6 +4,7 @@ import org.lzz.generate.app.datasource.DataSource;
 import org.lzz.generate.app.datasource.DataSourceWarpper;
 import org.lzz.generate.app.service.BaseService;
 import org.lzz.generate.app.vo.ColumnVo;
+import org.lzz.generate.app.vo.SqlVo;
 import org.lzz.generate.app.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,5 +77,20 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public List<String> getDataBase(String sourceId) {
         return null;
+    }
+
+    @Override
+    public int executeQuery(SqlVo sqlVo) {
+        return 0;
+    }
+
+    @Override
+    public void commit(String sourceId) {
+
+    }
+
+    @Override
+    public void rollback(String sourceId) {
+
     }
 }

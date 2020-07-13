@@ -4,6 +4,7 @@ import org.lzz.generate.app.datasource.DataSource;
 import org.lzz.generate.app.datasource.DataSourceWarpper;
 import org.lzz.generate.app.service.BaseService;
 import org.lzz.generate.app.vo.ColumnVo;
+import org.lzz.generate.app.vo.SqlVo;
 import org.lzz.generate.app.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -80,5 +81,24 @@ public class MysqlServiceImpl implements BaseService {
             dataBases.add(dataBaseName);
         }
         return dataBases;
+    }
+
+    @Override
+    public int executeQuery(SqlVo sqlVo) throws SQLException {
+        Statement statement = dataSourceWarpper.getConnection(sqlVo.getSourceId()).createStatement();
+        statement.execute(sqlVo.getSqlText());
+        return 1;
+    }
+
+    @Override
+    public void commit(String sourceId) throws SQLException {
+
+        dataSourceWarpper.getMap().get(sourceId).commit();
+
+    }
+
+    @Override
+    public void rollback(String sourceId) throws SQLException {
+        dataSourceWarpper.getMap().get(sourceId).rollback();
     }
 }
