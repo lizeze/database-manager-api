@@ -25,7 +25,7 @@ import java.util.UUID;
 public class DataSourceWarpper {
 
     private DataSource dataSource;
-
+    private Map<String, String> dataBaseName;
     private Map<String, Connection> map;
 
     public Map<String, Connection> getMap() {
@@ -42,6 +42,7 @@ public class DataSourceWarpper {
 
     public DataSourceWarpper() {
         this.map = new HashMap<>();
+        this.dataBaseName = new HashMap<>();
     }
 
     public String createConnection(DataSource dataSource) throws ClassNotFoundException, SQLException {
@@ -58,10 +59,11 @@ public class DataSourceWarpper {
         String sourceId = UUID.randomUUID().toString();
         Class.forName(dataSource.getClassName());
         Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPassWord());
-
+        String name = connection.getMetaData().getDatabaseProductName();
         connection.setAutoCommit(false);
 //        sourceId = "a";
         map.put(sourceId, connection);
+        dataBaseName.put(sourceId, dataSource.getDataBaseName());
         return sourceId;
     }
 
@@ -79,4 +81,10 @@ public class DataSourceWarpper {
         return this.map.get(sourceId);
     }
 
+    public String getDataBaseName(String sourceId) throws SQLException {
+        if (this.dataBaseName.containsKey(sourceId)) {
+            return this.dataBaseName.get(sourceId);
+        }
+        return null;
+    }
 }

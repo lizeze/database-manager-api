@@ -23,7 +23,7 @@ import java.util.List;
  * @Description TODO
  * @createTime 2020年07月11日 17:04:00
  */
-@Service("dm")
+@SuppressWarnings("unchecked")
 public class BaseServiceImpl implements BaseService {
 
 
@@ -32,7 +32,8 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public List<ColumnVo> getColumn(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
-        ResultSet columns = dataSourceWarpper.getDatabaseMetaData(sourceId).getColumns(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName, "%");
+
+        ResultSet columns = dataSourceWarpper.getDatabaseMetaData(sourceId).getColumns(dataSourceWarpper.getDataBaseName(sourceId), dataSourceWarpper.getDataBaseName(sourceId), tableName, "%");
         List<ColumnVo> columnVoList = new ArrayList<>();
         ColumnVo columnVo = null;
         while (columns.next()) {
@@ -75,22 +76,26 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<String> getDataBase(String sourceId) {
+    public List<String> getDataBase(String sourceId) throws SQLException {
         return null;
     }
 
     @Override
-    public int executeQuery(SqlVo sqlVo) {
-        return 0;
+    public int executeQuery(SqlVo sqlVo) throws SQLException {
+        Statement statement = dataSourceWarpper.getConnection(sqlVo.getSourceId()).createStatement();
+        statement.execute(sqlVo.getSqlText());
+        return 1;
     }
 
     @Override
-    public void commit(String sourceId) {
+    public void commit(String sourceId) throws SQLException {
+
+        dataSourceWarpper.getMap().get(sourceId).commit();
 
     }
 
     @Override
-    public void rollback(String sourceId) {
-
+    public void rollback(String sourceId) throws SQLException {
+        dataSourceWarpper.getMap().get(sourceId).rollback();
     }
 }

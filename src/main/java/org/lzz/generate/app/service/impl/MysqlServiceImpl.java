@@ -24,7 +24,7 @@ import java.util.List;
  * @createTime 2020年07月11日 23:10:00
  */
 @Service("mysql")
-public class MysqlServiceImpl implements BaseService {
+public class MysqlServiceImpl  extends  BaseServiceImpl {
 
     private final String DRIVER = "com.mysql.jdbc.Driver";
 
@@ -32,10 +32,6 @@ public class MysqlServiceImpl implements BaseService {
     @Autowired
     private DataSourceWarpper dataSourceWarpper;
 
-    @Override
-    public List<ColumnVo> getColumn(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
-        return null;
-    }
 
     @Override
     public List<String> getPrimaryKeys(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
@@ -83,22 +79,5 @@ public class MysqlServiceImpl implements BaseService {
         return dataBases;
     }
 
-    @Override
-    public int executeQuery(SqlVo sqlVo) throws SQLException {
-        Statement statement = dataSourceWarpper.getConnection(sqlVo.getSourceId()).createStatement();
-        statement.execute(sqlVo.getSqlText());
-        return 1;
-    }
 
-    @Override
-    public void commit(String sourceId) throws SQLException {
-
-        dataSourceWarpper.getMap().get(sourceId).commit();
-
-    }
-
-    @Override
-    public void rollback(String sourceId) throws SQLException {
-        dataSourceWarpper.getMap().get(sourceId).rollback();
-    }
 }
