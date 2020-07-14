@@ -31,7 +31,7 @@ public class BaseServiceImpl implements BaseService {
     private DataSourceWarpper dataSourceWarpper;
 
     @Override
-    public List<ColumnVo> getColumn(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
+    public List<ColumnVo> getColumn(String sourceId, String dataBaseName,String tableName) throws SQLException, ClassNotFoundException {
 
         ResultSet columns = dataSourceWarpper.getDatabaseMetaData(sourceId).getColumns(dataSourceWarpper.getDataBaseName(sourceId), dataSourceWarpper.getDataBaseName(sourceId), tableName, "%");
         List<ColumnVo> columnVoList = new ArrayList<>();
@@ -48,7 +48,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<String> getPrimaryKeys(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
+    public List<String> getPrimaryKeys(String sourceId, String dataBaseName,String tableName) throws SQLException, ClassNotFoundException {
 
         List<String> list = new ArrayList<>();
         ResultSet primaryKeys = dataSourceWarpper.getDatabaseMetaData(sourceId).getPrimaryKeys(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName);
@@ -59,7 +59,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<TableVo> getTables(String sourceId) throws SQLException, ClassNotFoundException {
+    public List<TableVo> getTables(String sourceId,String dataBaseName) throws SQLException, ClassNotFoundException {
 
         String[] types = new String[1];
         types[0] = "TABLE";

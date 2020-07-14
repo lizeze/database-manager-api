@@ -17,12 +17,12 @@ import java.util.List;
 public interface BaseService {
 
 
-    List<ColumnVo> getColumn(String sourceId, String tableName) throws SQLException, ClassNotFoundException;
+    List<ColumnVo> getColumn(String sourceId, String dataBaseName,String tableName) throws SQLException, ClassNotFoundException;
 
-    List<String> getPrimaryKeys(String sourceId, String tableName) throws SQLException, ClassNotFoundException;
+    List<String> getPrimaryKeys(String sourceId, String dataBaseName,String tableName) throws SQLException, ClassNotFoundException;
 
 
-    List<TableVo> getTables(String sourceId) throws SQLException, ClassNotFoundException;
+    List<TableVo> getTables(String sourceId,String dataBaseName) throws SQLException, ClassNotFoundException;
 
     List<String> getDataBase(String sourceId) throws SQLException;
 

@@ -44,7 +44,7 @@ public class MainController {
         if (connection != null) {
             if (connection.getMetaData().getDatabaseProductName().toLowerCase().equals("mysql")) {
 
-                list = mySqlService.getColumn(sourceId, map.get("tableName"));
+                list = mySqlService.getColumn(sourceId, "", map.get("tableName"));
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(list);
@@ -60,11 +60,10 @@ public class MainController {
     }
 
 
+    @GetMapping("/table/{sourceId}/{dataBaseName}")
+    public ResponseEntity getTables(@PathVariable String sourceId, @PathVariable String dataBaseName) throws SQLException, ClassNotFoundException {
 
-    @GetMapping("/table/{sourceId}")
-    public ResponseEntity getTables(@PathVariable String sourceId) throws SQLException, ClassNotFoundException {
-
-        List<TableVo> tables = mySqlService.getTables(sourceId);
+        List<TableVo> tables = mySqlService.getTables(sourceId, dataBaseName);
 
         return ResponseEntity.status(HttpStatus.OK).body(tables);
 

@@ -12,6 +12,12 @@ import java.util.List;
 public class TableVo {
 
 
+    private String name;
+
+    public String getName() {
+        return tableName;
+    }
+
     private String tableName;
 
     private String remark;
@@ -32,5 +38,7 @@ public class TableVo {
         this.tableName = tableName;
     }
 
-
+    public void setName(String name) {
+        this.name = name;
+    }
 }

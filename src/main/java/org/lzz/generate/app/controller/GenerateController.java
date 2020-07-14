@@ -30,7 +30,7 @@ public class GenerateController {
 
     @GetMapping("/column")
     public ResponseEntity aaa() throws SQLException, ClassNotFoundException {
-        List<ColumnVo> list = baseService.getColumn("", "test");
+        List<ColumnVo> list = baseService.getColumn("", "", "test");
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
@@ -38,7 +38,7 @@ public class GenerateController {
     @GetMapping("/table/{sourceId}")
     public ResponseEntity getTables(@PathVariable String sourceId) throws SQLException, ClassNotFoundException {
 
-        List<TableVo> tableVos = baseService.getTables(sourceId);
+        List<TableVo> tableVos = baseService.getTables(sourceId, "");
 
         return ResponseEntity.status(HttpStatus.OK).body(tableVos);
 
@@ -48,7 +48,7 @@ public class GenerateController {
     @GetMapping("/pk")
     public ResponseEntity getPrimaryKeys() throws SQLException, ClassNotFoundException {
 
-        List<String> tablekeys = baseService.getPrimaryKeys("", "test");
+        List<String> tablekeys = baseService.getPrimaryKeys("", "", "test");
 
         return ResponseEntity.status(HttpStatus.OK).body(tablekeys);
 

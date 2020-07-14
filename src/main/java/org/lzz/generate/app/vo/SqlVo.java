@@ -9,8 +9,17 @@ package org.lzz.generate.app.vo;
  */
 public class SqlVo {
 
-    private  String sourceId;
-    private  String sqlText;
+    private String sourceId;
+    private String sqlText;
+    private String dataBaseName;
+
+    public String getDataBaseName() {
+        return dataBaseName;
+    }
+
+    public void setDataBaseName(String dataBaseName) {
+        this.dataBaseName = dataBaseName;
+    }
 
     public String getSourceId() {
         return sourceId;
