@@ -46,25 +46,19 @@ public class DataSourceWarpper {
     }
 
     public String createConnection(DataSource dataSource) throws ClassNotFoundException, SQLException {
-//
-//        dataSource.setClassName("dm.jdbc.driver.DmDriver");
-//        dataSource.setPassWord("dmserver2020");
-//        dataSource.setUrl("jdbc:dm://localhost:5236");
-//        dataSource.setUserName("LZZ");
-//        dataSource.setClassName("com.mysql.jdbc.Driver");
-//        dataSource.setUserName("root");
-//        dataSource.setDataBaseName("test");
-        this.dataSource = dataSource;
 
-        String sourceId = UUID.randomUUID().toString();
-        Class.forName(dataSource.getClassName());
-        Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPassWord());
-        String name = connection.getMetaData().getDatabaseProductName();
-        connection.setAutoCommit(false);
-//        sourceId = "a";
-        map.put(sourceId, connection);
-        dataBaseName.put(sourceId, dataSource.getDataBaseName());
-        return sourceId;
+        try {
+            this.dataSource = dataSource;
+            String sourceId = UUID.randomUUID().toString();
+            Class.forName(dataSource.getClassName());
+            Connection connection = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPassWord());
+//        connection.setAutoCommit(false);
+            map.put(sourceId, connection);
+            dataBaseName.put(sourceId, dataSource.getDataBaseName());
+            return sourceId;
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
 
