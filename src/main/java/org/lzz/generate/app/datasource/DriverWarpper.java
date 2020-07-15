@@ -13,7 +13,7 @@ public class DriverWarpper {
 
     public DriverWarpper(DataSource dataSource) {
 
-        String dataSourceType = dataSource.getType();
+        String dataSourceType = dataSource.getType().toLowerCase();
         switch (dataSourceType) {
             case "mysql":
                 dataSource.setClassName("com.mysql.jdbc.Driver");
@@ -23,6 +23,11 @@ public class DriverWarpper {
                 dataSource.setClassName("dm.jdbc.driver.DmDriver");
                 dataSource.setUrl("jdbc:dm://" + dataSource.getHost() + ":" + dataSource.getPort());
                 dataSource.setDataBaseName(dataSource.getUserName());
+                break;
+            case "sqlserver":
+                dataSource.setClassName("com.sqlserver.jdbc.Driver");
+                dataSource.setUrl("jdbc:sqlserver://" + dataSource.getHost() + ":" + dataSource.getPort() + ";DataBaseName=" + dataSource.getDataBaseName());
+
                 break;
 
         }
