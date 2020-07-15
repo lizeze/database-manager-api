@@ -12,10 +12,21 @@ public class DriverWarpper {
     private DataSource dataSource;
 
     public DriverWarpper(DataSource dataSource) {
-        if (dataSource.getType().equals("mysql")) {
-            dataSource.setClassName("com.mysql.jdbc.Driver");
-            dataSource.setUrl("jdbc:mysql://" + dataSource.getHost() + ":" + dataSource.getPort() + "/" + dataSource.getDataBaseName() + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+
+        String dataSourceType = dataSource.getType();
+        switch (dataSourceType) {
+            case "mysql":
+                dataSource.setClassName("com.mysql.jdbc.Driver");
+                dataSource.setUrl("jdbc:mysql://" + dataSource.getHost() + ":" + dataSource.getPort() + "/" + dataSource.getDataBaseName() + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+                break;
+            case "dm":
+                dataSource.setClassName("dm.jdbc.driver.DmDriver");
+                dataSource.setUrl("jdbc:dm://" + dataSource.getHost() + ":" + dataSource.getPort());
+                dataSource.setDataBaseName(dataSource.getUserName());
+                break;
+
         }
+
         this.dataSource = dataSource;
     }
 

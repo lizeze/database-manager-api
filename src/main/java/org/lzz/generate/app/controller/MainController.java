@@ -35,6 +35,9 @@ public class MainController {
     @Qualifier("mysql")
     BaseService mySqlService;
 
+    @Autowired
+    @Qualifier("dm")
+    BaseService dmService;
 
     @PostMapping("/columns/{sourceId}")
     public ResponseEntity getCploumns(@PathVariable String sourceId, @RequestBody Map<String, String> map) throws SQLException, ClassNotFoundException {
@@ -53,7 +56,7 @@ public class MainController {
     @GetMapping("/database/{sourceId}")
     public ResponseEntity getDataBase(@PathVariable String sourceId) throws SQLException, ClassNotFoundException {
 
-        List<String> dataBase = mySqlService.getDataBase(sourceId);
+        List<String> dataBase = getService(sourceId).getDataBase(sourceId);
 
         return ResponseEntity.status(HttpStatus.OK).body(dataBase);
 
@@ -63,10 +66,26 @@ public class MainController {
     @GetMapping("/table/{sourceId}/{dataBaseName}")
     public ResponseEntity getTables(@PathVariable String sourceId, @PathVariable String dataBaseName) throws SQLException, ClassNotFoundException {
 
-        List<TableVo> tables = mySqlService.getTables(sourceId, dataBaseName);
+        List<TableVo> tables = getService(sourceId).getTables(sourceId, dataBaseName);
 
         return ResponseEntity.status(HttpStatus.OK).body(tables);
 
     }
 
+    private BaseService getService(String sourceId) throws SQLException {
+        Connection connection = dataSourceWarpper.getMap().get(sourceId);
+        if (connection != null) {
+            String dataBaseProduct = connection.getMetaData().getDatabaseProductName().toLowerCase();
+
+            if (dataBaseProduct.contains("mysql"))
+
+                return mySqlService;
+
+            if (dataBaseProduct.contains("dm"))
+                return dmService;
+
+
+        }
+        return null;
+    }
 }
