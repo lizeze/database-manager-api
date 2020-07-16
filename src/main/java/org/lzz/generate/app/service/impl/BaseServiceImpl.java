@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zeze.li
@@ -97,5 +98,10 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public void rollback(String sourceId) throws SQLException {
         dataSourceWarpper.getMap().get(sourceId).rollback();
+    }
+
+    @Override
+    public List<Map<String, Object>> getTableList(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
+        return null;
     }
 }

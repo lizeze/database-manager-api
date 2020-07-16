@@ -62,6 +62,15 @@ public class MainController {
 
     }
 
+    @GetMapping("/table/list/{sourceId}/{tableName}")
+    public ResponseEntity<?> getTableData(@PathVariable String sourceId, @PathVariable String tableName) throws SQLException, ClassNotFoundException {
+
+        List<Map<String, Object>> mapList = getService(sourceId).getTableList(sourceId, tableName);
+
+        return ResponseEntity.status(HttpStatus.OK).body(mapList);
+
+    }
+
 
     @GetMapping("/table/{sourceId}/{dataBaseName}")
     public ResponseEntity getTables(@PathVariable String sourceId, @PathVariable String dataBaseName) throws SQLException, ClassNotFoundException {
@@ -81,8 +90,7 @@ public class MainController {
 
                 return mySqlService;
 
-            if (dataBaseProduct.contains("dm"))
-                return dmService;
+            if (dataBaseProduct.contains("dm")) return dmService;
 
 
         }

@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.sql.rowset.JdbcRowSet;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zeze.li
@@ -50,16 +50,16 @@ public class MysqlServiceImpl extends BaseServiceImpl {
     public List<TableVo> getTables(String sourceId, String dataBaseName) throws SQLException, ClassNotFoundException {
 
 
-//        Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
+        //        Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
 
-        JdbcRowSet jrs=new JdbcRowSetImpl( dataSourceWarpper.getConnection(sourceId));
+        JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sourceId));
 
-        jrs.setCommand("use "+dataBaseName); //执行选择数据库操作
+        jrs.setCommand("use " + dataBaseName); //执行选择数据库操作
         jrs.execute();
-            jrs.setCommand("show table status");
+        jrs.setCommand("show table status");
         jrs.execute();
 
-//        ResultSet rs = statement.executeQuery(stringBuilder.toString());
+        //        ResultSet rs = statement.executeQuery(stringBuilder.toString());
 
         List<TableVo> tableVos = new ArrayList<>();
         TableVo tableVo = null;
@@ -89,5 +89,27 @@ public class MysqlServiceImpl extends BaseServiceImpl {
         return dataBases;
     }
 
+    @Override
+    public List<Map<String, Object>> getTableList(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
+        JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sourceId));
 
+        Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
+        ResultSet rs = statement.executeQuery("select *  from " + tableName);
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<ColumnVo> columnVos = super.getColumn(sourceId, "", tableName);
+        int columnCount = rs.getMetaData().getColumnCount();
+        while (rs.next()) {
+
+            Map<String, Object> map = new HashMap<>();
+            for (int i = 0; i < columnVos.size(); i++) {
+
+                map.put(columnVos.get(i).getColumnName(), rs.getString(columnVos.get(i).getColumnName()));
+            }
+            result.add(map);
+
+
+        }
+        return result;
+
+    }
 }
