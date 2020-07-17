@@ -12,6 +12,24 @@ public class SqlVo {
     private String sourceId;
     private String sqlText;
     private String dataBaseName;
+    private Integer count;
+    private  String tableName;
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public String getDataBaseName() {
         return dataBaseName;

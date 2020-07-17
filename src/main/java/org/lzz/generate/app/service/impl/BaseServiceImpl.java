@@ -101,7 +101,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<Map<String, Object>> getTableList(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
+    public List<Map<String, Object>> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
         return null;
     }
 }

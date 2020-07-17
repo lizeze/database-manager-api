@@ -33,5 +33,5 @@ public interface BaseService {
 
     void rollback(String sourceId) throws SQLException;
 
-    List<Map<String, Object>> getTableList(String sourceId, String tableName) throws SQLException, ClassNotFoundException;
+    List<Map<String, Object>> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException;
 }

@@ -3,6 +3,7 @@ package org.lzz.generate.app.controller;
 import org.lzz.generate.app.datasource.DataSourceWarpper;
 import org.lzz.generate.app.service.BaseService;
 import org.lzz.generate.app.vo.ColumnVo;
+import org.lzz.generate.app.vo.SqlVo;
 import org.lzz.generate.app.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,10 +63,10 @@ public class MainController {
 
     }
 
-    @GetMapping("/table/list/{sourceId}/{tableName}")
-    public ResponseEntity<?> getTableData(@PathVariable String sourceId, @PathVariable String tableName) throws SQLException, ClassNotFoundException {
+    @PostMapping("/table/list/")
+    public ResponseEntity<?> getTableData(@RequestBody SqlVo sqlVo) throws SQLException, ClassNotFoundException {
 
-        List<Map<String, Object>> mapList = getService(sourceId).getTableList(sourceId, tableName);
+        List<Map<String, Object>> mapList = getService(sqlVo.getSourceId()).getTableList(sqlVo);
 
         return ResponseEntity.status(HttpStatus.OK).body(mapList);
 

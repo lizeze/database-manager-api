@@ -54,7 +54,7 @@ public class MysqlServiceImpl extends BaseServiceImpl {
 
         JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sourceId));
 
-        jrs.setCommand("use " + dataBaseName); //执行选择数据库操作
+        jrs.setCommand("use `" + dataBaseName+"`"); //执行选择数据库操作
         jrs.execute();
         jrs.setCommand("show table status");
         jrs.execute();
@@ -90,13 +90,17 @@ public class MysqlServiceImpl extends BaseServiceImpl {
     }
 
     @Override
-    public List<Map<String, Object>> getTableList(String sourceId, String tableName) throws SQLException, ClassNotFoundException {
-        JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sourceId));
+    public List<Map<String, Object>> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
+        JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sqlVo.getSourceId()));
 
-        Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
-        ResultSet rs = statement.executeQuery("select *  from " + tableName);
+        Statement statement = dataSourceWarpper.getConnection(sqlVo.getSourceId()).createStatement();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("select *  from " + sqlVo.getTableName());
+        if (sqlVo.getSqlText() != "") stringBuilder.append(" where " + sqlVo.getSqlText());
+        stringBuilder.append("  LIMIT " + sqlVo.getCount());
+        ResultSet rs = statement.executeQuery(stringBuilder.toString());
         List<Map<String, Object>> result = new ArrayList<>();
-        List<ColumnVo> columnVos = super.getColumn(sourceId, "", tableName);
+        List<ColumnVo> columnVos = super.getColumn(sqlVo.getSourceId(), "", sqlVo.getTableName());
         int columnCount = rs.getMetaData().getColumnCount();
         while (rs.next()) {
 
