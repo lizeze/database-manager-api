@@ -66,7 +66,7 @@ public class MainController {
     @PostMapping("/table/list/")
     public ResponseEntity<?> getTableData(@RequestBody SqlVo sqlVo) throws SQLException, ClassNotFoundException {
 
-        List<Map<String, Object>> mapList = getService(sqlVo.getSourceId()).getTableList(sqlVo);
+        Map<String, Object> mapList = getService(sqlVo.getSourceId()).getTableList(sqlVo);
 
         return ResponseEntity.status(HttpStatus.OK).body(mapList);
 

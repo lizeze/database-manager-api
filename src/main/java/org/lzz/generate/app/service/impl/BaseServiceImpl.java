@@ -9,6 +9,7 @@ import org.lzz.generate.app.vo.SqlVo;
 import org.lzz.generate.app.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -102,20 +103,20 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<Map<String, Object>> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
+    public Map<String, Object> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
         return null;
     }
 
     public Integer getCountSql(String sourceId, String tableName, String sqlText) throws SQLException {
 
-        String sql = "select count(1) as count form " + tableName;
-        if (sqlText != null)
+        String sql = "select count(1) as count from `" + tableName + "`";
+        if (sqlText != null && !StringUtils.isEmpty(sqlText))
             sql += " where " + sqlText;
         Integer count = 0;
         ResultSet resultSet = this.executeQuery(sourceId, sql);
         while (resultSet.next()) {
 
-            resultSet.getString("count");
+            count = Integer.parseInt(resultSet.getString("count"));
         }
         return count;
 

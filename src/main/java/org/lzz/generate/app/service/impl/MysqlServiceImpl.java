@@ -90,14 +90,16 @@ public class MysqlServiceImpl extends BaseServiceImpl {
     }
 
     @Override
-    public List<Map<String, Object>> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
+    public Map<String, Object> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
         JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sqlVo.getSourceId()));
-
+        Map<String, Object> responseData = new HashMap<>();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("select   *  from `" + sqlVo.getTableName() + "`");
         if (sqlVo.getSqlText() != "") stringBuilder.append(" where " + sqlVo.getSqlText());
+        Integer totalCount = super.getCountSql(sqlVo.getSourceId(), sqlVo.getTableName(), sqlVo.getSqlText());
         Integer startCount = sqlVo.getPageSize() * (sqlVo.getPageIndex() - 1);
+        responseData.put("totalCount", totalCount);
         stringBuilder.append("  LIMIT " + startCount + "," + sqlVo.getPageSize() + ";");
         ResultSet rs = super.executeQuery(sqlVo.getSourceId(), stringBuilder.toString());
         List<Map<String, Object>> result = new ArrayList<>();
@@ -114,7 +116,8 @@ public class MysqlServiceImpl extends BaseServiceImpl {
 
 
         }
-        return result;
+        responseData.put("data", result);
+        return responseData;
 
     }
 }
