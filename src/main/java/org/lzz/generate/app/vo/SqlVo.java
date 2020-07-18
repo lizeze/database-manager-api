@@ -12,8 +12,9 @@ public class SqlVo {
     private String sourceId;
     private String sqlText;
     private String dataBaseName;
-    private Integer count;
-    private  String tableName;
+    private Integer pageIndex;
+    private String tableName;
+    private Integer pageSize;
 
     public String getTableName() {
         return tableName;
@@ -23,12 +24,20 @@ public class SqlVo {
         this.tableName = tableName;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getPageIndex() {
+        return pageIndex;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     public String getDataBaseName() {

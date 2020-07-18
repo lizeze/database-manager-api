@@ -1,5 +1,6 @@
 package org.lzz.generate.app.service.impl;
 
+import freemarker.template.utility.StringUtil;
 import org.lzz.generate.app.datasource.DataSource;
 import org.lzz.generate.app.datasource.DataSourceWarpper;
 import org.lzz.generate.app.service.BaseService;
@@ -32,7 +33,7 @@ public class BaseServiceImpl implements BaseService {
     private DataSourceWarpper dataSourceWarpper;
 
     @Override
-    public List<ColumnVo> getColumn(String sourceId, String dataBaseName,String tableName) throws SQLException, ClassNotFoundException {
+    public List<ColumnVo> getColumn(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException {
 
         ResultSet columns = dataSourceWarpper.getDatabaseMetaData(sourceId).getColumns(dataSourceWarpper.getDataBaseName(sourceId), dataSourceWarpper.getDataBaseName(sourceId), tableName, "%");
         List<ColumnVo> columnVoList = new ArrayList<>();
@@ -49,7 +50,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<String> getPrimaryKeys(String sourceId, String dataBaseName,String tableName) throws SQLException, ClassNotFoundException {
+    public List<String> getPrimaryKeys(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException {
 
         List<String> list = new ArrayList<>();
         ResultSet primaryKeys = dataSourceWarpper.getDatabaseMetaData(sourceId).getPrimaryKeys(null, dataSourceWarpper.getDataSource().getDataBaseName(), tableName);
@@ -60,7 +61,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public List<TableVo> getTables(String sourceId,String dataBaseName) throws SQLException, ClassNotFoundException {
+    public List<TableVo> getTables(String sourceId, String dataBaseName) throws SQLException, ClassNotFoundException {
 
         String[] types = new String[1];
         types[0] = "TABLE";
@@ -103,5 +104,28 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public List<Map<String, Object>> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
         return null;
+    }
+
+    public Integer getCountSql(String sourceId, String tableName, String sqlText) throws SQLException {
+
+        String sql = "select count(1) as count form " + tableName;
+        if (sqlText != null)
+            sql += " where " + sqlText;
+        Integer count = 0;
+        ResultSet resultSet = this.executeQuery(sourceId, sql);
+        while (resultSet.next()) {
+
+            resultSet.getString("count");
+        }
+        return count;
+
+
+    }
+
+    public ResultSet executeQuery(String sourceId, String sql) throws SQLException {
+
+        Statement statement = dataSourceWarpper.getConnection(sourceId).createStatement();
+        ResultSet rs = statement.executeQuery(sql);
+        return rs;
     }
 }
