@@ -19,13 +19,13 @@
     </properties>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>com.dm</groupId>-->
-            <!--<artifactId>jdbc</artifactId>-->
-            <!--<scope>system</scope>-->
-            <!--<version>1</version>-->
-            <!--<systemPath>${project.basedir}/src/main/resources/lib/DmJdbcDriver18.jar</systemPath>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.dm</groupId>
+            <artifactId>jdbc</artifactId>
+            <scope>system</scope>
+            <version>1</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/DmJdbcDriver18.jar</systemPath>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>com.sqlserver</groupId>-->
             <!--<artifactId>jdbc</artifactId>-->
