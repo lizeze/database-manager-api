@@ -27,6 +27,11 @@ public class DriverWarpper {
             case "sqlserver":
                 dataSource.setClassName("com.sqlserver.jdbc.Driver");
                 dataSource.setUrl("jdbc:sqlserver://" + dataSource.getHost() + ":" + dataSource.getPort() + ";DataBaseName=" + dataSource.getDataBaseName());
+                break;
+
+            case "postgresql":
+                dataSource.setClassName("org.postgresql.Driver");
+                dataSource.setUrl(String.format("jdbc:postgresql://%s:%s/%s", dataSource.getHost(), dataSource.getPort(), dataSource.getDataBaseName()));
 
                 break;
 

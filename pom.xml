@@ -26,13 +26,13 @@
             <version>1</version>
             <systemPath>${project.basedir}/src/main/resources/lib/DmJdbcDriver18.jar</systemPath>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.sqlserver</groupId>-->
-            <!--<artifactId>jdbc</artifactId>-->
-            <!--<scope>system</scope>-->
-            <!--<version>7.4.1</version>-->
-            <!--<systemPath>${project.basedir}/src/main/resources/lib/mssql-jdbc-7.4.1.jre8.jar</systemPath>-->
-        <!--</dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.sqlserver</groupId>-->
+        <!--            <artifactId>jdbc</artifactId>-->
+        <!--            <scope>system</scope>-->
+        <!--            <version>7.4.1</version>-->
+        <!--            <systemPath>${project.basedir}/src/main/resources/lib/mssql-jdbc-7.4.1.jre8.jar</systemPath>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
@@ -45,6 +45,16 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/mysql-connector-java-8.0.16.jar</systemPath>
 
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/postgresql-42.2.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

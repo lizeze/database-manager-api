@@ -40,6 +40,11 @@ public class MainController {
     @Qualifier("dm")
     BaseService dmService;
 
+
+    @Autowired
+    @Qualifier("postgre")
+    BaseService postgreService;
+
     @PostMapping("/columns/{sourceId}")
     public ResponseEntity getCploumns(@PathVariable String sourceId, @RequestBody Map<String, String> map) throws SQLException, ClassNotFoundException {
 
@@ -92,6 +97,8 @@ public class MainController {
                 return mySqlService;
 
             if (dataBaseProduct.contains("dm")) return dmService;
+
+            if (dataBaseProduct.contains("post")) return postgreService;
 
 
         }
