@@ -1,5 +1,6 @@
 package org.lzz.generate.app.service.impl;
 
+import com.sun.rowset.JdbcRowSetImpl;
 import freemarker.template.utility.StringUtil;
 import org.lzz.generate.app.datasource.DataSource;
 import org.lzz.generate.app.datasource.DataSourceWarpper;
@@ -11,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.sql.rowset.JdbcRowSet;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,17 +37,16 @@ public class BaseServiceImpl implements BaseService {
     private DataSourceWarpper dataSourceWarpper;
 
     @Override
-    public List<ColumnVo> getColumn(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException {
+    public List<ColumnVo> getColumn(ResultSet resultSet) throws SQLException, ClassNotFoundException {
 
-        ResultSet columns = dataSourceWarpper.getDatabaseMetaData(sourceId).getColumns(dataSourceWarpper.getDataBaseName(sourceId), dataSourceWarpper.getDataBaseName(sourceId), tableName, "%");
         List<ColumnVo> columnVoList = new ArrayList<>();
         ColumnVo columnVo = null;
-        while (columns.next()) {
-            if (columns.getString("COLUMN_NAME").equals("id")) continue;
+        while (resultSet.next()) {
+            if (resultSet.getString("COLUMN_NAME").equals("id")) continue;
             columnVo = new ColumnVo();
-            columnVo.setColumnName(columns.getString("COLUMN_NAME"));
-            columnVo.setColumnType(columns.getString("TYPE_NAME"));
-            columnVo.setColumnComment(columns.getString("REMARKS"));
+            columnVo.setColumnName(resultSet.getString("COLUMN_NAME"));
+            columnVo.setColumnType(resultSet.getString("TYPE_NAME"));
+            columnVo.setColumnComment(resultSet.getString("REMARKS"));
             columnVoList.add(columnVo);
         }
         return columnVoList;
@@ -102,14 +104,55 @@ public class BaseServiceImpl implements BaseService {
         dataSourceWarpper.getMap().get(sourceId).rollback();
     }
 
+
     @Override
     public Map<String, Object> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
         return null;
     }
 
+    public Map<String, Object> getTableList(SqlVo sqlVo, List<ColumnVo> columnVos) throws SQLException, ClassNotFoundException {
+        JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sqlVo.getSourceId()));
+        Map<String, Object> responseData = new HashMap<>();
+
+        ResultSet resultSet = this.executeQuery(sqlVo.getSourceId(), sqlVo.getCountSql());
+        Integer totalCount = 0;
+        while (resultSet.next()) {
+
+            totalCount = Integer.parseInt(resultSet.getString("count"));
+        }
+        responseData.put("totalCount", totalCount);
+
+        ResultSet rs = executeQuery(sqlVo.getSourceId(), sqlVo.getListSql());
+        List<Map<String, Object>> result = new ArrayList<>();
+        int columnCount = rs.getMetaData().getColumnCount();
+        while (rs.next()) {
+
+            Map<String, Object> map = new HashMap<>();
+            for (int i = 0; i < columnVos.size(); i++) {
+
+                map.put(columnVos.get(i).getColumnName(), rs.getString(columnVos.get(i).getColumnName()));
+            }
+            result.add(map);
+
+
+        }
+        responseData.put("data", result);
+        return responseData;
+    }
+
+    @Override
+    public String getCountSql(SqlVo sqlVo) {
+        return null;
+    }
+
+    @Override
+    public String getListSql(SqlVo sqlVo) {
+        return null;
+    }
+
     public Integer getCountSql(String sourceId, String tableName, String sqlText) throws SQLException {
 
-        String sql = "select count(1) as count from `" + tableName + "`";
+        String sql = "select count(1) as count from " + tableName;
         if (sqlText != null && !StringUtils.isEmpty(sqlText))
             sql += " where " + sqlText;
         Integer count = 0;

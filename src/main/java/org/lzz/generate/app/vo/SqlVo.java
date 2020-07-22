@@ -15,6 +15,24 @@ public class SqlVo {
     private Integer pageIndex;
     private String tableName;
     private Integer pageSize;
+    private String countSql;
+    private String listSql;
+
+    public String getListSql() {
+        return listSql;
+    }
+
+    public void setListSql(String listSql) {
+        this.listSql = listSql;
+    }
+
+    public String getCountSql() {
+        return countSql;
+    }
+
+    public void setCountSql(String countSql) {
+        this.countSql = countSql;
+    }
 
     public String getTableName() {
         return tableName;

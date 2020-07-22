@@ -4,6 +4,7 @@ import org.lzz.generate.app.vo.ColumnVo;
 import org.lzz.generate.app.vo.SqlVo;
 import org.lzz.generate.app.vo.TableVo;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import java.util.Map;
 public interface BaseService {
 
 
-    List<ColumnVo> getColumn(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException;
+    List<ColumnVo> getColumn(ResultSet resultSet) throws SQLException, ClassNotFoundException;
 
     List<String> getPrimaryKeys(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException;
 
@@ -34,4 +35,9 @@ public interface BaseService {
     void rollback(String sourceId) throws SQLException;
 
     Map<String, Object> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException;
+
+
+    String getCountSql(SqlVo sqlVo);
+
+    String getListSql(SqlVo sqlVo);
 }

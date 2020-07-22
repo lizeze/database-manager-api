@@ -47,6 +47,14 @@ public class MysqlServiceImpl extends BaseServiceImpl {
     }
 
     @Override
+    public Map<String, Object> getTableList(SqlVo sqlVo, List<ColumnVo> columnVos) throws SQLException, ClassNotFoundException {
+
+        String tableName = "`" + sqlVo.getTableName() + "`";
+        sqlVo.setTableName(tableName);
+        return super.getTableList(sqlVo, columnVos);
+    }
+
+    @Override
     public List<TableVo> getTables(String sourceId, String dataBaseName) throws SQLException, ClassNotFoundException {
 
 
@@ -90,34 +98,18 @@ public class MysqlServiceImpl extends BaseServiceImpl {
     }
 
     @Override
-    public Map<String, Object> getTableList(SqlVo sqlVo) throws SQLException, ClassNotFoundException {
-        JdbcRowSet jrs = new JdbcRowSetImpl(dataSourceWarpper.getConnection(sqlVo.getSourceId()));
-        Map<String, Object> responseData = new HashMap<>();
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select   *  from `" + sqlVo.getTableName() + "`");
-        if (sqlVo.getSqlText() != "") stringBuilder.append(" where " + sqlVo.getSqlText());
-        Integer totalCount = super.getCountSql(sqlVo.getSourceId(), sqlVo.getTableName(), sqlVo.getSqlText());
-        Integer startCount = sqlVo.getPageSize() * (sqlVo.getPageIndex() - 1);
-        responseData.put("totalCount", totalCount);
-        stringBuilder.append("  LIMIT " + startCount + "," + sqlVo.getPageSize() + ";");
-        ResultSet rs = super.executeQuery(sqlVo.getSourceId(), stringBuilder.toString());
-        List<Map<String, Object>> result = new ArrayList<>();
-        List<ColumnVo> columnVos = super.getColumn(sqlVo.getSourceId(), "", sqlVo.getTableName());
-        int columnCount = rs.getMetaData().getColumnCount();
-        while (rs.next()) {
-
-            Map<String, Object> map = new HashMap<>();
-            for (int i = 0; i < columnVos.size(); i++) {
-
-                map.put(columnVos.get(i).getColumnName(), rs.getString(columnVos.get(i).getColumnName()));
-            }
-            result.add(map);
-
-
+    public List<ColumnVo> getColumn(ResultSet resultSet) throws SQLException, ClassNotFoundException {
+//        ResultSet columns = dataSourceWarpper.getDatabaseMetaData(sourceId).getColumns(dataSourceWarpper.getDataBaseName(sourceId), dataSourceWarpper.getDataBaseName(sourceId), tableName, "%");
+        List<ColumnVo> columnVoList = new ArrayList<>();
+        ColumnVo columnVo = null;
+        while (resultSet.next()) {
+            if (resultSet.getString("COLUMN_NAME").equals("id")) continue;
+            columnVo = new ColumnVo();
+            columnVo.setColumnName(resultSet.getString("COLUMN_NAME"));
+            columnVo.setColumnType(resultSet.getString("TYPE_NAME"));
+            columnVo.setColumnComment(resultSet.getString("REMARKS"));
+            columnVoList.add(columnVo);
         }
-        responseData.put("data", result);
-        return responseData;
-
+        return columnVoList;
     }
 }
