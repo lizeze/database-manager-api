@@ -36,13 +36,19 @@ public class BaseServiceImpl implements BaseService {
     @Autowired
     private DataSourceWarpper dataSourceWarpper;
 
+
     @Override
+    public List<ColumnVo> getColumn(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+
     public List<ColumnVo> getColumn(ResultSet resultSet) throws SQLException, ClassNotFoundException {
 
         List<ColumnVo> columnVoList = new ArrayList<>();
         ColumnVo columnVo = null;
         while (resultSet.next()) {
-            if (resultSet.getString("COLUMN_NAME").equals("id")) continue;
+//            if (resultSet.getString("COLUMN_NAME").equals("id")) continue;
             columnVo = new ColumnVo();
             columnVo.setColumnName(resultSet.getString("COLUMN_NAME"));
             columnVo.setColumnType(resultSet.getString("TYPE_NAME"));

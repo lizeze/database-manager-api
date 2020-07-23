@@ -71,12 +71,14 @@ public class PostgresqlServiceImpl extends BaseServiceImpl {
 
     }
 
+
+
     @Override
-    public List<ColumnVo> getColumn(ResultSet resultSet) throws SQLException, ClassNotFoundException {
+    public List<ColumnVo> getColumn(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("SELECT  a.attname AS columnName, t.typname AS columnType ");
-        stringBuilder.append(" , a.attnotnull AS notnull, b.description AS columnComment");
+        stringBuilder.append("SELECT  a.attname AS COLUMN_NAME, t.typname AS TYPE_NAME ");
+        stringBuilder.append(" , a.attnotnull AS notnull, b.description AS REMARKS");
         stringBuilder.append(" FROM pg_class c, pg_attribute a LEFT JOIN pg_description b ON a.attrelid = b.objoid AND a.attnum = b.objsubid, pg_type t");
         stringBuilder.append(" WHERE c.relname = '" + tableName + "'");
         stringBuilder.append("    AND a.attnum > 0");
@@ -84,7 +86,10 @@ public class PostgresqlServiceImpl extends BaseServiceImpl {
         stringBuilder.append("    AND a.atttypid = t.oid");
         stringBuilder.append(" ORDER BY a.attnum");
 
+        ResultSet resultSet =executeQuery(sourceId,stringBuilder.toString());
 
-        return super.getColumn(sourceId, dataBaseName, tableName);
+        return super.getColumn(resultSet);
     }
+
+
 }

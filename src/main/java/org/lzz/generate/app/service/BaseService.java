@@ -19,7 +19,7 @@ import java.util.Map;
 public interface BaseService {
 
 
-    List<ColumnVo> getColumn(ResultSet resultSet) throws SQLException, ClassNotFoundException;
+    List<ColumnVo> getColumn(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException;
 
     List<String> getPrimaryKeys(String sourceId, String dataBaseName, String tableName) throws SQLException, ClassNotFoundException;
 
