@@ -85,6 +85,12 @@ public class MainController {
 
     }
 
+
+    @GetMapping("/test")
+    public String aaa() {
+        return "这是代理";
+    }
+
     private BaseService getService(String sourceId) throws SQLException {
         Connection connection = dataSourceWarpper.getMap().get(sourceId);
         if (connection != null) {
