@@ -50,12 +50,10 @@ public class MainController {
 
         List<ColumnVo> list = new ArrayList<>();
         Connection connection = dataSourceWarpper.getMap().get(sourceId);
-        if (connection != null) {
-            if (connection.getMetaData().getDatabaseProductName().toLowerCase().equals("mysql")) {
 
-                list = mySqlService.getColumn(sourceId, "", map.get("tableName"));
-            }
-        }
+
+        list = getService(sourceId).getColumn(sourceId, "", map.get("tableName"));
+
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
